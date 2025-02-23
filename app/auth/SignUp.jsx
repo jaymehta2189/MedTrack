@@ -202,28 +202,32 @@ import { Link, router } from 'expo-router';
 import axios from 'axios';
 
 export default function SignUp() {
-  const [username, setUsername] = useState('');
+  const [name, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleSignUp = async () => {
-    if (!username || !email || !password) {
+    if (!name || !email || !password) {
       Alert.alert('Error', 'Please fill in all fields');
       return;
     }
 
     setLoading(true);
     try {
-      const response = await axios.post('YOUR_API_ENDPOINT/signup', {
-        username,
+      console.log("inside signup");
+      const response = await axios.post('http://10.0.2.2:8888/api/v1/users/user', {
+        name,
         email,
         password,
       });
+
+      console.log("after signup");
       
       // Handle successful sign up
       router.replace('/auth/SignIn');
     } catch (error) {
+      console.log("error", error);
       Alert.alert('Error', error.response?.data?.message || 'Sign up failed');
     } finally {
       setLoading(false);
@@ -249,7 +253,7 @@ export default function SignUp() {
           style={styles.input}
           placeholder="Username"
           placeholderTextColor="#a0a0a0"
-          value={username}
+          value={name}
           onChangeText={setUsername}
           autoCapitalize="none"
         />

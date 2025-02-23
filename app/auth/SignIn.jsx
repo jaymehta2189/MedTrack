@@ -563,13 +563,11 @@ export default function SignIn() {
     try {
       const response = await loginUser(email, password);
       
-      // Store auth token and user data
-      await AsyncStorage.setItem('authToken', response.token);
-      await AsyncStorage.setItem('userData', JSON.stringify(response.user));
-      
-      // Configure notifications
-      await configurePushNotifications();
-      await setupMedicineReminders();
+      // Store user data
+      await AsyncStorage.setItem('userData', JSON.stringify({
+        id: response.id,
+        email: response.email
+      }));
       
       router.replace('/(app)/Home');
     } catch (error) {

@@ -481,6 +481,7 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { router } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage
 import axios from 'axios';  // Import axios
 
 export default function AddMedicine() {
@@ -510,24 +511,40 @@ export default function AddMedicine() {
 
     setLoading(true);
     try {
+
+      const userData = await AsyncStorage.getItem('userData');
+      const userId = await JSON.parse(userData).id;
+
       const newMedicine = {
-        name: medicineName,
-        quantity: parseInt(quantity),
-        expiryDate: expiryDate.toISOString(),
-        doseAmount: parseInt(doseAmount),
-        doseTimes: doseTimes,
+        name: medicineName.trim(),
+        quantity: parseFloat(quantity) || 0,
+        expiryDate: expiryDate.toISOString().split('T')[0],
+        amount: parseFloat(doseAmount) || 0,
+        times: doseTimes.map(time => time.trim()), 
+        userId: userId,
       };
-
+      
       // Make the POST request using axios
-      const response = await axios.post('YOUR_API_URL_HERE', newMedicine); // Replace with your actual API URL
-
+      console.log("before",newMedicine);
+      const response = await axios.post(
+        'http://10.0.2.2:8888/api/v1/healthproduct/insert',
+        newMedicine,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      console.log("after",response.data);
       if (response.status === 200) {
         Alert.alert('Success', 'Medicine added successfully');
         router.replace('/(app)/Home');
       } else {
+        console.log("dbjgdjhbgfdhbgfhj", response.data);
         throw new Error('Failed to add medicine');
       }
     } catch (error) {
+      console.log("error", error);
       Alert.alert('Error', 'Failed to add medicine');
     } finally {
       setLoading(false);

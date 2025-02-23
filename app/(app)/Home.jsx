@@ -525,7 +525,6 @@
 
 
 
-////////
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -543,30 +542,30 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
 
   // Fetch data from API on component mount
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        // Replace with your actual API URLs
-        const dailyResponse = await axios.get('/api/daily-doses');
-        const stockResponse = await axios.get('/api/stock-details');
-        const weeklyResponse = await axios.get('/api/weekly-consumption');
-        const lowStockResponse = await axios.get('/api/low-stock');
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     setLoading(true);
+  //     try {
+  //       // Replace with your actual API URLs
+  //       const dailyResponse = await axios.get('/api/daily-doses');
+  //       const stockResponse = await axios.get('/api/v1/healthproduct/user/{userid}');
+  //       const weeklyResponse = await axios.get('/api/v1/logs/{userid}/time/7///weekly-consumption');
+  //       const lowStockResponse = await axios.get('/api/v1/healthproduct/user/lower/{userid}///low-stock');
         
-        // Set the fetched data into state
-        setDailyDoses(dailyResponse.data);
-        setStockDetails(stockResponse.data);
-        setWeeklyConsumption(weeklyResponse.data);
-        setLowStock(lowStockResponse.data);
-      } catch (error) {
-        Alert.alert('Error', 'Failed to fetch data');
-      } finally {
-        setLoading(false);
-      }
-    };
+  //       // Set the fetched data into state
+  //       setDailyDoses(dailyResponse.data);
+  //       setStockDetails(stockResponse.data);
+  //       setWeeklyConsumption(weeklyResponse.data);
+  //       setLowStock(lowStockResponse.data);
+  //     } catch (error) {
+  //       Alert.alert('Error', 'Failed to fetch data');
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchData();
-  }, []); // Empty array ensures this runs only once when the component mounts
+  //   fetchData();
+  // }, []); // Empty array ensures this runs only once when the component mounts
 
   const renderDailyDoses = () => (
     <View style={styles.sectionContainer}>

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const API_URL = process.env.EXPO_PUBLIC_API_URL || 'https://your-api-url.com';
+const API_URL = process.env.EXPO_PUBLIC_API_URL || 'http://10.0.2.2:8888/api/v1/';
 
 const api = axios.create({
   baseURL: API_URL,
@@ -13,9 +13,11 @@ const api = axios.create({
 // Request interceptor to add auth token
 api.interceptors.request.use(
   async (config) => {
-    const token = await AsyncStorage.getItem('authToken');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    const userData = await AsyncStorage.getItem('userData');
+    if (userData) {
+      const user = JSON.parse(userData);
+        // If needed, attach user ID or email for identification
+        config.headers['X-User-Id'] = user.id; 
     }
     return config;
   },
@@ -26,7 +28,8 @@ api.interceptors.request.use(
 
 export const loginUser = async (email, password) => {
   try {
-    const response = await api.post('/auth/login', { email, password });
+    const response = await api.post('/users/signIn', { email, password });
+    // console.log("response", response);
     return response.data;
   } catch (error) {
     throw error.response?.data || error.message;
@@ -62,7 +65,7 @@ export const updateMedicineStatus = async (medicineId, status) => {
 
 export const getOrders = async () => {
   try {
-    const response = await api.get('/orders');
+    const response = await api.get('/healthproduct/orders/{userid}');
     return response.data;
   } catch (error) {
     throw error.response?.data || error.message;
@@ -80,7 +83,7 @@ export const getUserProfile = async () => {
 
 export const getMedicineStats = async () => {
   try {
-    const response = await api.get('/medicines/stats');
+    const response = await api.get('/logs/{userid}/time/30///monthly-consumption');
     return response.data;
   } catch (error) {
     throw error.response?.data || error.message;

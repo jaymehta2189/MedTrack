@@ -1,8 +1,10 @@
 import { Tabs } from 'expo-router';
+
 import { Ionicons } from '@expo/vector-icons';
 
 export default function AppLayout() {
   return (
+    
     <Tabs
       screenOptions={{
         tabBarStyle: {
@@ -12,7 +14,7 @@ export default function AppLayout() {
         },
         tabBarActiveTintColor: '#192f6a',
         tabBarInactiveTintColor: '#a0a0a0',
-      
+        
       }}>
       <Tabs.Screen
         name="Home"
@@ -22,7 +24,7 @@ export default function AppLayout() {
             <Ionicons name="home" size={size} color={color} />
           ),
         }}
-      />
+        />
       <Tabs.Screen
         name="AddMedicine"
         options={{
@@ -31,7 +33,7 @@ export default function AppLayout() {
             <Ionicons name="add-circle" size={size} color={color} />
           ),
         }}
-      />
+        />
       <Tabs.Screen
         name="Orders"
         options={{
@@ -40,7 +42,7 @@ export default function AppLayout() {
             <Ionicons name="cart" size={size} color={color} />
           ),
         }}
-      />
+        />
       <Tabs.Screen
         name="Profile"
         options={{
@@ -49,7 +51,7 @@ export default function AppLayout() {
             <Ionicons name="person" size={size} color={color} />
           ),
         }}
-      />
+        />
     </Tabs>
   );
 }

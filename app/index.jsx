@@ -22,8 +22,8 @@ export default function Index() {
 
   const checkAuthStatus = async () => {
     try {
-      const token = await AsyncStorage.getItem('authToken');
-      setInitialRoute(token ? '/(app)/Home' : '/auth/SignIn');
+      const userData = await AsyncStorage.getItem('userData');
+      setInitialRoute(userData ? '/(app)/Home' : '/auth/SignIn');
     } catch (error) {
       setInitialRoute('/auth/SignIn');
     } finally {
