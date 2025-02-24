@@ -161,15 +161,17 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { getOrders } from '../../utils/api';
+// import { useFocusEffect } from 'expo-router';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function Orders() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [orders, setOrders] = useState([]);
 
-  useEffect(() => {
+  useFocusEffect(React.useCallback(() => {
     loadOrders();
-  }, []);
+  }, []));
 
   const loadOrders = async () => {
     try {
@@ -223,8 +225,8 @@ export default function Orders() {
           orders.map((order) => (
             <TouchableOpacity key={order.id} style={styles.orderCard}>
               <View style={styles.orderHeader}>
-                <Text style={styles.orderId}>{order.id}</Text>
-                <View style={[
+                <Text style={styles.orderId}>#MTORD{order.id}</Text>
+                {/* <View style={[
                   styles.statusBadge,
                   { backgroundColor: order.status === 'Delivered' ? '#dcfce7' : '#fef9c3' }
                 ]}>
@@ -232,7 +234,7 @@ export default function Orders() {
                     styles.statusText,
                     { color: order.status === 'Delivered' ? '#16a34a' : '#ca8a04' }
                   ]}>{order.status}</Text>
-                </View>
+                </View> */}
               </View>
 
               <View style={styles.orderDetails}>
@@ -243,7 +245,7 @@ export default function Orders() {
                 </View>
                 <View style={styles.detailRow}>
                   <Ionicons name="calendar-outline" size={16} color="#64748b" />
-                  <Text style={styles.detailText}>Ordered: {order.orderDate}</Text>
+                  <Text style={styles.detailText}>Ordered: {order.createdAt.split(' ')[0]}</Text>
                 </View>
                 <View style={styles.detailRow}>
                   <Ionicons name="alert-circle-outline" size={16} color="#64748b" />

@@ -571,6 +571,7 @@ export default function SignIn() {
       
       router.replace('/(app)/Home');
     } catch (error) {
+      console.log("error", error);
       Alert.alert('Error', error.message || 'Sign in failed');
     } finally {
       setLoading(false);

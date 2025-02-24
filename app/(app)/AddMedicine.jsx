@@ -483,7 +483,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { router } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage
 import axios from 'axios';  // Import axios
-
+import { useNavigation } from '@react-navigation/native';
 export default function AddMedicine() {
   const [medicineName, setMedicineName] = useState('');
   const [quantity, setQuantity] = useState('');
@@ -492,7 +492,7 @@ export default function AddMedicine() {
   const [doseTimes, setDoseTimes] = useState(['']);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  const navigation = useNavigation();
   const handleAddDoseTime = () => {
     setDoseTimes([...doseTimes, '']);
   };
@@ -538,7 +538,14 @@ export default function AddMedicine() {
       console.log("after",response.data);
       if (response.status === 200) {
         Alert.alert('Success', 'Medicine added successfully');
-        router.replace('/(app)/Home');
+        // router.replace('/(app)/Home');
+        setMedicineName('');
+        setQuantity('');
+        setExpiryDate(new Date());
+        setDoseAmount('');
+        setDoseTimes(['']);
+        
+        navigation.navigate('Home');
       } else {
         console.log("dbjgdjhbgfdhbgfhj", response.data);
         throw new Error('Failed to add medicine');

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { router } from 'expo-router';
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL || 'http://10.0.2.2:8888/api/v1/';
 
@@ -65,7 +66,10 @@ export const updateMedicineStatus = async (medicineId, status) => {
 
 export const getOrders = async () => {
   try {
-    const response = await api.get('/healthproduct/orders/{userid}');
+    const userData = await AsyncStorage.getItem('userData');
+    const user = JSON.parse(userData);
+    const userId = user.id;
+    const response = await api.get(`/healthproduct/orders/${userId}`);
     return response.data;
   } catch (error) {
     throw error.response?.data || error.message;
@@ -83,8 +87,14 @@ export const getUserProfile = async () => {
 
 export const getMedicineStats = async () => {
   try {
-    const response = await api.get('/logs/{userid}/time/30///monthly-consumption');
+    const userData = await AsyncStorage.getItem('userData');
+    const user = JSON.parse(userData);
+    const userId = user.id;
+    console.log("userId", userId);
+    const response = await api.get(`/logs/${userId}/time/7`); 
+    console.log("response", response.data);
     return response.data;
+    
   } catch (error) {
     throw error.response?.data || error.message;
   }
@@ -92,8 +102,9 @@ export const getMedicineStats = async () => {
 
 export const logoutUser = async () => {
   try {
-    await api.post('/auth/logout');
+    // await api.post('/auth/logout');
     await AsyncStorage.clear();
+    router.replace('auth/SignIn');
   } catch (error) {
     console.error('Logout error:', error);
     // Still clear local storage even if API call fails
